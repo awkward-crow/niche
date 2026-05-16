@@ -7,6 +7,13 @@
  - repl 
 
 ## next
+ - instantiate a struct and call methods on it
+
+## longer term
+ - hide the repl behind a test so that it does not figure in the main codebase (i.e. steel-core is a dev dependency only
+ - be able to test structs etc from several modules/libraries
+
+See `plan.md`.
 
 ## usage
 
