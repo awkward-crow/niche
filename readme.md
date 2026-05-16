@@ -1,5 +1,12 @@
 # niche
 
+## latest
+ - read source files from the command line
+ - repl 
+
+## next
+ - register a rust function and call it from the repl
+
 ## usage
 
 After
