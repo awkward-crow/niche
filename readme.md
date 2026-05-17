@@ -1,13 +1,15 @@
 # niche
 
 ## latest
- - multi-line input in the repl
- - register a rust function and call it from the repl
- - read source files from the command line
- - repl 
+ - introduce a random step generator and expose it in the repl
+ - move repl into a test to hide it from the main codebase
+ - instantiate a struct and call methods on it
 
 ## next
- - instantiate a struct and call methods on it
+ - expose a seeded random number generator in the repl
+ - build up a random walk in the repl; introduce dir. `scm` at project level
+
+ - build a .so 
 
 ## longer term
  - hide the repl behind a test so that it does not figure in the main codebase (i.e. steel-core is a dev dependency only
@@ -68,7 +70,22 @@ Or,
 (map (λ (x) (add 1.0 x)) '(2.5 5.0))
 ```
 
-### entering λ etc in neovim
+## instantiate a struct in the repl
+
+```sh
+cargo test repl -- --ignored --nocapture
+```
+
+Then,
+
+```scm
+(define w (make-walk))
+(step! w '(1 0))
+(walk-last w)
+(walk-length w)
+```
+
+## entering λ etc in neovim
 
 In insert mode, try `ctrl-k l*`. And `:he ctrl-k`.
 
