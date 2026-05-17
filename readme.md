@@ -1,5 +1,7 @@
 # niche
 
+A rusty random walk with an embedded scheme repl and a dynamic library for R.
+
 ## latest
 
  - build a .so and link to it from R
