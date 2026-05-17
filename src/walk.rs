@@ -1,5 +1,9 @@
 // walk.rs
 
+use rand::rngs::StdRng;
+
+pub struct SeededRng(pub StdRng);
+
 #[derive(Clone, Debug)]
 pub struct RandomWalk {
     pub points: Vec<(i64, i64)>,
@@ -34,14 +38,12 @@ pub fn random_step(rng: &mut impl rand::Rng) -> (i64, i64) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::{rngs::StdRng, SeedableRng};
+    use rand::SeedableRng;
     use std::any::{Any, TypeId};
     use std::io::{self, BufRead, Write};
     use steel::rvals::CustomType;
     use steel::steel_vm::engine::Engine;
     use steel::steel_vm::register_fn::RegisterFn;
-
-    struct SeededRng(StdRng);
 
     impl CustomType for SeededRng {
         fn as_any_ref(&self) -> &dyn Any {

@@ -3,8 +3,17 @@ name = "niche"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "niche"
+path = "src/main.rs"
+
+[lib]
+name = "niche"
+crate-type = ["cdylib"]
+
 [dependencies]
 rand = "0.8"
+extendr-api = "0.7"
 
 [dev-dependencies]
 steel-core = "0.8.2"
