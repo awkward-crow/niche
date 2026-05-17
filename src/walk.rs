@@ -127,6 +127,22 @@ mod tests {
             if trimmed.is_empty() && buf.is_empty() {
                 continue;
             }
+
+            if let Some(path) = trimmed.strip_prefix(",load").map(str::trim) {
+                match std::fs::read_to_string(path) {
+                    Ok(src) => match vm.run(src) {
+                        Ok(vals) => {
+                            for v in vals {
+                                println!("{v:?}");
+                            }
+                        }
+                        Err(e) => eprintln!("error: {e}"),
+                    },
+                    Err(e) => eprintln!("error: {e}"),
+                }
+                continue;
+            }
+
             if !buf.is_empty() {
                 buf.push('\n');
             }

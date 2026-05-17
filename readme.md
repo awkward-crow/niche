@@ -1,14 +1,14 @@
 # niche
 
 ## latest
+ - build up a random walk in the repl; introduce dir. `scm` at project level
+ - source (slurp?) a file from the repl
+ - expose a seeded random number generator in the repl
  - introduce a random step generator and expose it in the repl
  - move repl into a test to hide it from the main codebase
  - instantiate a struct and call methods on it
 
 ## next
- - expose a seeded random number generator in the repl
- - build up a random walk in the repl; introduce dir. `scm` at project level
- - source (slurp?) a file from the repl
 
  - build a .so 
 
@@ -41,6 +41,12 @@ Then,
 (walk-last w)
 (walk-length w)
 (walk-path w)
+```
+
+Or,
+
+```scm
+,load scheme/walk.scm
 ```
 
 ## entering λ etc in neovim
