@@ -1,3 +1,5 @@
+// walk.rs
+
 #[derive(Clone, Debug)]
 pub struct RandomWalk {
     pub points: Vec<(i64, i64)>,
@@ -24,20 +26,37 @@ impl RandomWalk {
     }
 }
 
-pub fn random_step() -> (i64, i64) {
-    use rand::Rng;
+pub fn random_step(rng: &mut impl rand::Rng) -> (i64, i64) {
     let dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)];
-    dirs[rand::thread_rng().gen_range(0..4)]
+    dirs[rng.gen_range(0..4)]
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rand::{rngs::StdRng, SeedableRng};
     use std::any::{Any, TypeId};
     use std::io::{self, BufRead, Write};
     use steel::rvals::CustomType;
     use steel::steel_vm::engine::Engine;
     use steel::steel_vm::register_fn::RegisterFn;
+
+    struct SeededRng(StdRng);
+
+    impl CustomType for SeededRng {
+        fn as_any_ref(&self) -> &dyn Any {
+            self as &dyn Any
+        }
+        fn as_any_ref_mut(&mut self) -> &mut dyn Any {
+            self as &mut dyn Any
+        }
+        fn inner_type_id(&self) -> TypeId {
+            TypeId::of::<Self>()
+        }
+        fn display(&self) -> Result<String, std::fmt::Error> {
+            Ok("#<seeded-rng>".to_string())
+        }
+    }
 
     impl CustomType for RandomWalk {
         fn as_any_ref(&self) -> &dyn Any {
@@ -60,8 +79,9 @@ mod tests {
         let mut vm = Engine::new();
 
         vm.register_fn("make-walk", RandomWalk::new);
+        vm.register_fn("make-rng", |seed: u64| SeededRng(StdRng::seed_from_u64(seed)));
 
-        // (step! w (random-step))
+        // (step! w (random-step rng))
         vm.register_fn("step!", |w: &mut RandomWalk, step: (i64, i64)| {
             w.step(step);
         });
@@ -74,7 +94,13 @@ mod tests {
             w.last()
         });
 
-        vm.register_fn("random-step", random_step);
+        vm.register_fn("walk-path", |w: &mut RandomWalk| -> Vec<(i64, i64)> {
+            w.points.clone()
+        });
+
+        vm.register_fn("random-step", |rng: &mut SeededRng| -> (i64, i64) {
+            random_step(&mut rng.0)
+        });
 
         run_repl(&mut vm);
     }
@@ -140,3 +166,6 @@ mod tests {
         depth <= 0
     }
 }
+
+
+// end
