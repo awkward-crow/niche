@@ -1,36 +1,33 @@
 #[derive(Clone, Debug)]
-pub struct Point {
-    pub x: i64,
-    pub y: i64,
-}
-
-#[derive(Clone, Debug)]
 pub struct RandomWalk {
-    pub points: Vec<Point>,
+    pub points: Vec<(i64, i64)>,
 }
 
 impl RandomWalk {
     pub fn new() -> Self {
         Self {
-            points: vec![Point { x: 0, y: 0 }],
+            points: vec![(0, 0)],
         }
     }
 
-    pub fn step(&mut self, dx: i64, dy: i64) {
-        let last = self.points.last().unwrap();
-        self.points.push(Point {
-            x: last.x + dx,
-            y: last.y + dy,
-        });
+    pub fn step(&mut self, (dx, dy): (i64, i64)) {
+        let (x, y) = self.points.last().unwrap();
+        self.points.push((x + dx, y + dy));
     }
 
     pub fn len(&self) -> usize {
         self.points.len()
     }
 
-    pub fn last(&self) -> &Point {
-        self.points.last().unwrap()
+    pub fn last(&self) -> (i64, i64) {
+        *self.points.last().unwrap()
     }
+}
+
+pub fn random_step() -> (i64, i64) {
+    use rand::Rng;
+    let dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+    dirs[rand::thread_rng().gen_range(0..4)]
 }
 
 #[cfg(test)]
@@ -64,23 +61,20 @@ mod tests {
 
         vm.register_fn("make-walk", RandomWalk::new);
 
-        // (step! w '(dx dy))
-        vm.register_fn("step!", |w: &mut RandomWalk, v: Vec<i64>| {
-            if v.len() != 2 {
-                eprintln!("step! expects a list of 2 integers");
-                return;
-            }
-            w.step(v[0], v[1]);
+        // (step! w (random-step))
+        vm.register_fn("step!", |w: &mut RandomWalk, step: (i64, i64)| {
+            w.step(step);
         });
 
         vm.register_fn("walk-length", |w: &mut RandomWalk| -> usize {
             w.len()
         });
 
-        vm.register_fn("walk-last", |w: &mut RandomWalk| -> Vec<i64> {
-            let p = w.last();
-            vec![p.x, p.y]
+        vm.register_fn("walk-last", |w: &mut RandomWalk| -> (i64, i64) {
+            w.last()
         });
+
+        vm.register_fn("random-step", random_step);
 
         run_repl(&mut vm);
     }
