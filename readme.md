@@ -8,6 +8,7 @@
 ## next
  - expose a seeded random number generator in the repl
  - build up a random walk in the repl; introduce dir. `scm` at project level
+ - source (slurp?) a file from the repl
 
  - build a .so 
 
@@ -19,58 +20,13 @@ See `plan.md`.
 
 ## usage
 
-After
+### run `main`
 
 ```sh
-cargo build
+cargo run -- --n=15 --seed=100335
 ```
 
-try
-
-```sh
-./target/debug/niche 
-```
-
-and then
-
-```scm
-(define (sq x) (* x x))
-(sq 2)
-```
-=>
-    4
-
-Or,
-
-```sh
-./target/release/niche square.scm
-```
-
-```scm
-(map square '(1 2 4))
-```
-=>
-    '(1 4 16)
-
-## multi-line input
-
-```scm
-(define (cube x)
-    (* x x x))
-
-(cube 3)
-```
-=>
-    27
-
-## lambda
-
-```scm
-(foldl add 0.0 '(1.0 3.5))
-(map (λ (x) (add 1.0 x)) '(2.5 5.0))
-```
-
-## instantiate a struct in the repl
+### use the repl
 
 ```sh
 cargo test repl -- --ignored --nocapture
@@ -80,9 +36,11 @@ Then,
 
 ```scm
 (define w (make-walk))
-(step! w '(1 0))
+(define omega (make-rng 10031))
+(for-each (lambda (_) (step! w (random-step omega))) (range 0 10))
 (walk-last w)
 (walk-length w)
+(walk-path w)
 ```
 
 ## entering λ etc in neovim
