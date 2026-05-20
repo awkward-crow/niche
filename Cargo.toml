@@ -11,9 +11,12 @@ path = "src/main.rs"
 name = "niche"
 crate-type = ["cdylib"]
 
+[features]
+repl = ["steel-core"]
+
 [dependencies]
 rand = "0.8"
 extendr-api = "0.7"
+steel-core = { version = "0.8.2", optional = true }
 
 [dev-dependencies]
-steel-core = "0.8.2"

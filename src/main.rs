@@ -3,6 +3,9 @@
 #[allow(dead_code)]
 mod walk;
 
+#[cfg(feature = "repl")]
+mod repl;
+
 use rand::{SeedableRng, rngs::StdRng};
 use walk::{RandomWalk, random_step};
 
@@ -19,6 +22,8 @@ fn main() {
         };
         let mut val = |name| val.clone().or_else(|| args.next()).unwrap_or_else(|| panic!("{name} requires a value"));
         match key.as_str() {
+            #[cfg(feature = "repl")]
+            "--repl" => { repl::run(); return; }
             "--n" => n = val("--n").parse().expect("n must be a positive integer"),
             "--seed" => seed = val("--seed").parse().expect("seed must be an integer"),
             other => eprintln!("unknown argument: {other}"),

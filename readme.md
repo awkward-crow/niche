@@ -4,13 +4,11 @@ A rusty random walk with an embedded scheme repl and a dynamic library for R.
 
 ## latest
 
+ - move the repl to its own module, put it behind a feature flag
  - build a .so and link to it from R
  - build up a random walk in the repl; introduce dir. `scm` at project level
  - source (slurp?) a file from the repl
  - expose a seeded random number generator in the repl
- - introduce a random step generator and expose it in the repl
- - move repl into a test to hide it from the main codebase
- - instantiate a struct and call methods on it
 
 ## usage
 
@@ -20,10 +18,10 @@ A rusty random walk with an embedded scheme repl and a dynamic library for R.
 cargo run -- --n=15 --seed=100335
 ```
 
-### use the repl
+### use the scheme repl
 
 ```sh
-cargo test repl -- --ignored --nocapture
+cargo run --features repl -- --repl
 ```
 
 Then,
@@ -33,7 +31,7 @@ Then,
 (define omega (make-rng 10031))
 (for-each (lambda (_) (step! w (random-step omega))) (range 0 10))
 (walk-last w)
-(walk-length w)    # list of 101 c(x, y) pairs
+(walk-length w)
 (walk-path w)
 ```
 
@@ -41,6 +39,12 @@ Or,
 
 ```scm
 ,load scheme/walk.scm
+```
+
+### build the .so for R
+
+```sh
+cargo build --lib
 ```
 
 ### R
