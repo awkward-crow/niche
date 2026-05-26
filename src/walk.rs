@@ -1,7 +1,6 @@
-// walk.rs
-
 use rand::rngs::StdRng;
 
+#[allow(dead_code)]
 pub struct SeededRng(pub StdRng);
 
 #[derive(Clone, Debug)]
@@ -28,11 +27,13 @@ impl RandomWalk {
     pub fn last(&self) -> (i64, i64) {
         *self.points.last().unwrap()
     }
+
+    pub fn path(&self) -> &[(i64, i64)] {
+        &self.points
+    }
 }
 
 pub fn random_step(rng: &mut impl rand::Rng) -> (i64, i64) {
     let dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)];
     dirs[rng.gen_range(0..4)]
 }
-
-// end
