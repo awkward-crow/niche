@@ -1,5 +1,7 @@
 # niche
 
+[![CI](https://github.com/awkward-crow/niche/actions/workflows/ci.yml/badge.svg)](https://github.com/awkward-crow/niche/actions/workflows/ci.yml)
+
 A 2D random walk in Rust, surfaced through three interfaces: a CLI binary, an interactive Steel/Scheme REPL and a native shared library callable from R.
 
 The walk logic lives in `src/walk.rs`. The rest of the codebase is about the boundaries — compiling the same core as a `cdylib` for R via [extendr](https://extendr.github.io/) and registering Rust types as first-class objects in a [Steel](https://github.com/mattwparas/steel) Scheme VM behind a Cargo feature flag.
