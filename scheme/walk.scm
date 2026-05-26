@@ -1,5 +1,3 @@
-;; walk.scm
-
 (define w (make-walk))
 (define omega (make-rng 10031))
 
@@ -8,5 +6,3 @@
 (walk-last w)
 (walk-length w)
 (walk-path w)
-
-;; end

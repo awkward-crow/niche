@@ -1,5 +1,3 @@
-# niche.R
-
 # Source this file from the project root after `cargo build --release`.
 # Override the library path via the NICHE_SO environment variable if needed.
 
@@ -44,6 +42,3 @@ path <- function(x, ...) UseMethod("path")
 path.niche_walk <- function(x, ...) {
   .Call("wrap__Walk__path", x)
 }
-
-
-### end

@@ -35,7 +35,7 @@ impl Walk {
     fn path(&self) -> List {
         let points: Vec<Robj> = self
             .0
-            .points
+            .path()
             .iter()
             .map(|(x, y)| vec![*x as i32, *y as i32].into_robj())
             .collect();

@@ -1,5 +1,3 @@
-// repl.rs
-
 use std::any::{Any, TypeId};
 use std::io::{self, BufRead, Write};
 
@@ -146,6 +144,3 @@ fn is_balanced(s: &str) -> bool {
     }
     depth <= 0
 }
-
-
-// end
