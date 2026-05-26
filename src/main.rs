@@ -1,6 +1,3 @@
-// main.rs
-
-#[allow(dead_code)]
 mod walk;
 
 #[cfg(feature = "repl")]
@@ -36,10 +33,9 @@ fn main() {
         w.step(random_step(&mut rng));
     }
 
-    for (x, y) in &w.points {
+    for (x, y) in w.path() {
         println!("{x} {y}");
     }
+    let (fx, fy) = w.last();
+    eprintln!("after {} steps: ({fx}, {fy})", w.len() - 1);
 }
-
-
-// end
